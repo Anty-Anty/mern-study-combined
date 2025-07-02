@@ -18,6 +18,9 @@ app.use(bodyParser.json());
 //opening frontend access to images which are stored in backend (kind of endpoint)
 app.use('/uploads/images', express.static(path.join('uploads','images'))); 
 
+//lect 206 deploying combined app
+app.use(express.static(path.join('public'))); 
+
 //lecture 149
 app.use((req,res,next)=>{
     res.setHeader('Access-Control-Allow-Origin','*');
@@ -33,11 +36,16 @@ app.use((req,res,next)=>{
 app.use('/api/places', placesRoutes);
 app.use('/api/users', usersRoutes);
 
-// lecture 99 this middleware is only reache if it didn't have responce before
+//lect 206 deploying combined app
 app.use((req,res,next)=>{
-    const error = new HttpError('Could not find this route.', 404);
-    throw error;
-});
+    res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+ });
+
+// lecture 99 this middleware is only reache if it didn't have responce before
+// app.use((req,res,next)=>{
+//     const error = new HttpError('Could not find this route.', 404);
+//     throw error;
+// });
 
 //lecture 95 error handling midleware function, because it has 'error' attribute first
 //General error handeling logic
